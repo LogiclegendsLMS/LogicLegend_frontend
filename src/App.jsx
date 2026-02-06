@@ -1,17 +1,38 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import EduvionLogo from "./components/EduvionLogo";
+import MainLayout from "./components/MainLayout";
+
+// Pages
+
 import Home from "./pages/Home";
 
 export default function App() {
-  const [showLanding, setShowLanding] = useState(false);
+  const [showApp, setShowApp] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowLanding(true);
-    }, 3200); // logo animation duration
+      setShowApp(true);
+    }, 3200); // logo animation time
 
     return () => clearTimeout(timer);
   }, []);
 
-  return showLanding ? <Home/> : <EduvionLogo />;
+  // 🔥 Splash Screen
+  if (!showApp) {
+    return <EduvionLogo />;
+  }
+
+  // 🔥 Actual Website
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+         
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }

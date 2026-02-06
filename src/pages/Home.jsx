@@ -1,8 +1,6 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import StudyMaterials from "../components/StudyMaterials";
 import ExploreCourses from "../components/ExploreCourses";
 import TestimonialSlider from "../components/TestimonialSlider";
@@ -28,8 +26,9 @@ const cards = [
 export default function App() {
   return (
     <>
-      <Navbar />
-      <div className="w-full font-sans bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 overflow-hidden">
+     
+    <div className="w-full font-sans bg-gradient-to-b from-white to-gray-50 text-gray-900 overflow-hidden">
+
 
         {/* ================= HERO ================= */}
         <section className="relative overflow-hidden">
@@ -183,7 +182,7 @@ export default function App() {
                   {i.text}
                 </motion.div>
               ))}
-              <motion.img src="/super-kid.webp" alt="kid" className="relative z-10 h-[380px] object-contain" />
+              <motion.img src="/WhatsApp Image 2026-02-03 at 4.41.15 PM.jpeg" alt="kid" className="relative z-10 h-[380px] object-contain" />
             </motion.div>
           </div>
         </div>
@@ -259,7 +258,7 @@ export default function App() {
 
 <section className="relative bg-[#062B5B] py-24 overflow-hidden">
       {/* TOP CURVE */}
-      <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-gray-100 to-gray-100 rounded-b-[100%]" />
+      <div className="absolute top-0 left-0 w-full h-16 bg-white rounded-b-[100%]" />
 
       <div className="relative max-w-7xl mx-auto px-6 text-center text-white">
         {/* HEADING */}
@@ -279,7 +278,7 @@ export default function App() {
           <div className="text-center">
             <div className="bg-[#D9EEFF] rounded-2xl p-4 mb-5">
               <img
-                src="/employee.png"
+                src="/WhatsApp Image 2026-02-03 at 4.20.23 PM.jpeg"
                 alt="Employee training"
                 className="rounded-xl w-full h-[180px] object-cover"
               />
@@ -291,7 +290,7 @@ export default function App() {
           <div className="text-center">
             <div className="bg-[#D9EEFF] rounded-2xl p-4 mb-5">
               <img
-                src="/onboarding.png"
+                src="/WhatsApp Image 2026-02-03 at 4.20.03 PM.jpeg"
                 alt="Onboarding training"
                 className="rounded-xl w-full h-[180px] object-cover"
               />
@@ -303,7 +302,7 @@ export default function App() {
           <div className="text-center">
             <div className="bg-[#D9EEFF] rounded-2xl p-4 mb-5">
               <img
-                src="/partner.png"
+                src="/WhatsApp Image 2026-02-03 at 4.19.47 PM.jpeg"
                 alt="Partner training"
                 className="rounded-xl w-full h-[180px] object-cover"
               />
@@ -315,7 +314,7 @@ export default function App() {
           <div className="text-center">
             <div className="bg-[#D9EEFF] rounded-2xl p-4 mb-5">
               <img
-                src="/customer.png"
+                src="/WhatsApp Image 2026-02-03 at 4.20.11 PM.jpeg"
                 alt="Customer training"
                 className="rounded-xl w-full h-[180px] object-cover"
               />
@@ -334,7 +333,7 @@ export default function App() {
       </div>
 
       {/* BOTTOM CURVE */}
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-b from-gray-100 to-gray-100 rounded-t-[100%]" />
+      <div className="absolute bottom-0 left-0 w-full h-16 bg-white rounded-t-[100%]" />
     </section>
 
 
@@ -346,7 +345,7 @@ export default function App() {
         </div>
 
         {/* ================= FOOTER ================= */}
-        <Footer />
+       
         <ScrollToTop/>
       </div>
     </>

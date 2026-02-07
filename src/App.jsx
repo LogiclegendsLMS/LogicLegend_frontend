@@ -8,6 +8,7 @@ import MainLayout from "./components/MainLayout";
 
 import Home from "./pages/Home";
 import Login from "./components/Login";
+import singup from "./components/singup";
 
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/singup" element={<singup />} />
          
         </Route>
       </Routes>

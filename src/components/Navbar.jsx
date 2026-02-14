@@ -87,9 +87,9 @@ export default function Navbar() {
 </button>
 
           </NavLink>
-          <button className="px-4 py-2 text-sm border border-slate-300 rounded-full hover:border-yellow-500 hover:text-yellow-500 transition transform hover:scale-105">
-            Request a demo
-          </button>
+         <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
+    Request a demo
+  </button>
           <NavLink to={"/Singup"}>
           <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
             Sign up

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -33,21 +34,21 @@ export default function Login() {
       <div className="w-[900px] bg-white rounded-2xl shadow-2xl flex overflow-hidden">
 
         {/* LEFT SECTION — ANIMATED IMAGE */}
-<div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex flex-col justify-center items-center p-10">
+        <div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex flex-col justify-center items-center p-10">
 
-  {/* Animated GIF */}
-  <img
-    src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
-    alt="learning animation"
-    className="w-72 mb-6"
-  />
+          {/* Animated GIF */}
+          <img
+            src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
+            alt="learning animation"
+            className="w-72 mb-6"
+          />
 
-  <h1 className="text-4xl font-bold mb-3">Eduvion</h1>
-  <p className="text-center opacity-90">
-    Your Smart Learning Management System
-  </p>
+          <h1 className="text-4xl font-bold mb-3">Eduvion</h1>
+          <p className="text-center opacity-90">
+            Your Smart Learning Management System
+          </p>
 
-</div>
+        </div>
 
 
         {/* RIGHT SECTION */}
@@ -101,13 +102,16 @@ export default function Login() {
             </button>
 
           </form>
-
           <p className="text-sm mt-5 text-center">
             Don't have an account?{" "}
-            <span className="text-blue-600 cursor-pointer">
-              Signup
-            </span>
+            <NavLink to={"/Singup"}>
+              <button
+                className="ml-1 py-1 text-black rounded-lg"
+              >
+                Signup
+              </button></NavLink>
           </p>
+
 
         </div>
       </div>

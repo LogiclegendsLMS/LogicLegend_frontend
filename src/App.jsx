@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 
 import Login from "./components/Login";
 import Signup from "./components/signup";
+import Demo from "./components/demo";
+import Allcoures from "./pages/navbarpages/coures/Allcoures";
 
 export default function App() {
   const [showApp, setShowApp] = useState(false);
@@ -39,7 +41,11 @@ export default function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/Singup" element={<Signup />} />
-         
+          <Route path="/demo" element={<Demo />} />
+          <Route path="/allcoures" element={<Allcoures/>}/>
+
+
+
         </Route>
       </Routes>
     </BrowserRouter>

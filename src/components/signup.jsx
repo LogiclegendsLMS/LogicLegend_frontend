@@ -63,25 +63,57 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit
-  const handleSubmit = (e) => {
+  // Submit form → API call
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validate()) {
-      console.log(formData);
+    if (!validate()) return;
+
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/v1/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+
+      console.log("SIGNUP RESPONSE:", data);
+
       alert("Signup Successful 🚀");
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+      });
+
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert(error.message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#062B5B] to-blue-800">
-
       <div className="w-[900px] bg-white rounded-2xl shadow-2xl flex overflow-hidden">
 
         {/* LEFT IMAGE */}
         <div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex flex-col justify-center items-center p-10 hidden md:flex">
           <img
             src="https://img.freepik.com/free-vector/programming-concept-illustration_114360-1351.jpg"
+            alt="signup illustration"
             className="w-96 mb-6"
           />
           <h1 className="text-4xl font-bold mb-3">Eduvion</h1>
@@ -178,6 +210,7 @@ export default function Signup() {
             >
               Sign Up
             </button>
+
           </form>
         </div>
       </div>

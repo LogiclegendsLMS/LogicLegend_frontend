@@ -87,9 +87,13 @@ export default function Navbar() {
             </button>
 
           </NavLink>
+
+<NavLink to={"/demo"}>
           <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
             Request a demo
           </button>
+</NavLink>
+
           <NavLink to={"/Singup"}>
             <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
               Sign up
@@ -178,3 +182,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

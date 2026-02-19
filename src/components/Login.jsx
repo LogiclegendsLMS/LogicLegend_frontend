@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
+
 export default function Login() {
   const [form, setForm] = useState({
     emailOrPhone: "",
@@ -17,7 +18,6 @@ export default function Login() {
     if (name === "emailOrPhone") {
       // If user typing numbers → treat as phone
       if (/^\d*$/.test(value)) {
-        // Stop typing after 10 digits
         if (value.length > 10) return;
       }
     }
@@ -29,26 +29,22 @@ export default function Login() {
   const validate = () => {
     let newErrors = {};
 
-    // Email or Phone validation
     if (!form.emailOrPhone) {
       newErrors.emailOrPhone = "Email or phone is required";
     } else {
       const isNumber = /^\d+$/.test(form.emailOrPhone);
 
       if (isNumber) {
-        // Phone validation
         if (form.emailOrPhone.length !== 10) {
           newErrors.emailOrPhone = "Phone must be exactly 10 digits";
         }
       } else {
-        // Email validation
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.emailOrPhone)) {
           newErrors.emailOrPhone = "Enter valid email address";
         }
       }
     }
 
-    // Password validation
     if (!form.password) {
       newErrors.password = "Password is required";
     } else if (form.password.length < 6) {
@@ -64,29 +60,54 @@ export default function Login() {
   };
 
   // Submit form
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ // Submit form
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (validate()) {
-      console.log("Login Data:", form);
-      alert("Login Successful 🚀");
+  if (!validate()) return;
+
+  try {
+    const res = await fetch(
+      "http://localhost:3000/api/v1/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
     }
-  };
+
+    console.log("LOGIN RESPONSE:", data);
+
+    alert("Login Successful ✅");
+
+    // Example: store user if needed
+    // localStorage.setItem("user", JSON.stringify(data.user));
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert(error.message);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#062B5B] to-blue-500">
-
       <div className="w-[900px] bg-white rounded-2xl shadow-2xl flex overflow-hidden">
 
         {/* LEFT SECTION */}
         <div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex flex-col justify-center items-center p-10">
-
           <img
             src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
             alt="learning animation"
             className="w-72 mb-6"
           />
-
           <h1 className="text-4xl font-bold mb-3">Eduvion</h1>
           <p className="text-center opacity-90">
             Your Smart Learning Management System
@@ -129,7 +150,6 @@ export default function Login() {
                 className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
               />
 
-              {/* Eye button */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -156,14 +176,13 @@ export default function Login() {
 
           <p className="text-sm mt-5 text-center">
             Don't have an account?
-            <NavLink to={"/Singup"}>
+            <NavLink to={"/Signup"}>
               <button className="ml-2 py-1 text-black rounded-lg">
                 Signup
               </button>
             </NavLink>
           </p>
         </div>
-
       </div>
     </div>
   );

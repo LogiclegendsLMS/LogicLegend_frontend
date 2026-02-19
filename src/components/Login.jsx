@@ -115,7 +115,7 @@ const Login = () => {
             </form>
 
             <footer className="mt-10 text-center text-xs font-bold text-gray-400 uppercase tracking-widest">
-              New here? <NavLink to="/Signup" className="text-black border-b-2 border-yellow-400 ml-1">Sign Up</NavLink>
+              New here? <NavLink to="/signup" className="text-black border-b-2 border-yellow-400 ml-1">Sign Up</NavLink>
               <p className="text-gray-400 mt-5 px-4 text-[11px] font-bold uppercase tracking-widest"><NavLink to="/" >
                     go to home?
                   </NavLink></p>

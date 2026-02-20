@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -6,55 +7,57 @@ export default function ExploreCourses() {
     <section className="w-full py-20">
       {/* HEADING */}
       <h2 className="text-3xl md:text-4xl font-bold mb-14 text-center">
-        Explore <samp className="text-[#ff7a00]">courses</samp> {" "}
+        Explore <span className="text-[#ff7a00]">Eduvion Courses</span>{" "}
         <span className="text-lg font-medium text-[#ff7a00]">(LKG – 13)</span>
       </h2>
 
-      {/* CARDS CONTAINER - 80% width centered */}
       <div className="w-4/5 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* CARD 1 */}
+
+          {/* COMPETITIVE EXAMS */}
           <Card
             badge="Class 3 - 13"
             title="Competitive Exams"
             pills={[
               "JEE",
               "NEET",
-              "JEE/NEET Foundation",
-              "EAMCET",
+              "Foundation",
               "Olympiad",
-              "JEE Books",
-              "NEET Books",
+              "Practice Tests",
             ]}
-            image="/ff06ac5b-081a-4a50-a494-16beb717d5b1-1682592787084-4102418410874681.png"
+            // student preparing / exam illustration
+            image="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
             curve="bg-[#C9DBFF]"
             badgeColor="text-blue-600"
           />
 
-          {/* CARD 2 */}
+          {/* SCHOOL TUITION */}
           <Card
             badge="Class 3 - 12"
             title="School Tuition"
-            pills={["CBSE Board", "ICSE Board", "3 - 5 All Boards"]}
-            image="/ff06ac5b-081a-4a50-a494-16beb717d5b1-1682592787084-4102418410874681.png"
+            pills={["CBSE Board", "ICSE Board", "All Subjects"]}
+            // teacher + classroom illustration
+            image="https://cdn-icons-png.flaticon.com/512/1995/1995574.png"
             curve="bg-[#E6DFFF]"
             badgeColor="text-purple-600"
           />
 
-          {/* CARD 3 */}
+          {/* KIDS COURSES */}
           <Card
             badge="Class LKG - 8"
-            title="Courses for kids"
+            title="Courses for Kids"
             pills={[
-              "Learn Phonics - English",
-              "Learn Math",
-              "Learn Coding",
-              "Spoken English Program",
+              "Phonics",
+              "Math Basics",
+              "Coding for Kids",
+              "Spoken English",
             ]}
-            image="/ff06ac5b-081a-4a50-a494-16beb717d5b1-1682592787084-4102418410874681.png"
+            // kids learning illustration
+            image="https://cdn-icons-png.flaticon.com/512/2784/2784469.png"
             curve="bg-[#FFE9B5]"
             badgeColor="text-blue-600"
           />
+
         </div>
       </div>
     </section>
@@ -70,15 +73,25 @@ function Card({ badge, title, pills, image, curve, badgeColor }) {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
       whileHover={{ y: -6 }}
-      className="relative rounded-[32px] border p-8 overflow-hidden"
+      className="relative rounded-[32px] border p-8 overflow-hidden bg-white shadow-md"
     >
-      {/* CURVED BG */}
+      {/* CURVED BACKGROUND */}
       <div
         className={`absolute right-0 top-0 h-full w-[58%] rounded-l-[220px] ${curve}`}
       />
 
+      {/* IMAGE */}
+      <img
+        src={image}
+        alt="education"
+        className="absolute bottom-6 right-6 h-[140px] object-contain z-10"
+      />
+
+      {/* OVERLAY (keeps text readable) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-10" />
+
       {/* CONTENT */}
-      <div className="relative z-10">
+      <div className="relative z-20">
         <p className={`font-semibold mb-3 ${badgeColor}`}>{badge}</p>
 
         <h3 className="text-xl font-bold mb-6">{title}</h3>
@@ -94,21 +107,13 @@ function Card({ badge, title, pills, image, curve, badgeColor }) {
           ))}
         </div>
 
-        {/* UI-ONLY BUTTON */}
         <button
           type="button"
-          className="bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105 text-white px-6 py-3 rounded-xl font-semibold cursor-default"
+          className="bg-yellow-500 hover:bg-yellow-600 transition transform hover:scale-105 text-white px-6 py-3 rounded-xl font-semibold"
         >
           Explore Courses
         </button>
       </div>
-
-      {/* IMAGE */}
-      <img
-        src={image}
-        alt=""
-        className="absolute bottom-0 right-4 h-[300px] object-contain z-10"
-      />
     </motion.div>
   );
 }

@@ -20,7 +20,7 @@ export default function Demo() {
         <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/6Af6b_wyiwI"
+            src="https://www.youtube.com/watch?v=DkcVQYSK6kU"
             title="Eduvion LMS Request Demo"
             allowFullScreen
           ></iframe>

@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate(); // ⭐ navigation
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,7 +28,6 @@ export default function Signup() {
   const validate = () => {
     let newErrors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
@@ -34,21 +36,18 @@ export default function Signup() {
       newErrors.name = "Name must be at least 3 characters";
     }
 
-    // Email validation
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Enter a valid email with @";
     }
 
-    // Phone validation
     if (!formData.phone) {
       newErrors.phone = "Phone number required";
     } else if (formData.phone.length !== 10) {
       newErrors.phone = "Phone must be 10 digits";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password required";
     } else if (formData.password.length < 6) {
@@ -63,23 +62,19 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit form → API call
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validate()) return;
 
     try {
-      const res = await fetch(
-        "http://localhost:3000/api/v1/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch("http://localhost:3000/api/v1/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await res.json();
 
@@ -87,11 +82,8 @@ export default function Signup() {
         throw new Error(data.message || "Signup failed");
       }
 
-      console.log("SIGNUP RESPONSE:", data);
-
       alert("Signup Successful 🚀");
 
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -106,11 +98,21 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#062B5B] to-blue-800">
-      <div className="w-[900px] bg-white rounded-2xl shadow-2xl flex overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#062B5B] to-blue-800 p-4">
+
+      {/* MAIN CONTAINER */}
+      <div className="relative max-w-4xl w-full bg-white rounded-2xl shadow-2xl flex overflow-hidden">
+
+        {/* ⭐ BACK / CROSS BUTTON */}
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-4 right-4 text-2xl text-gray-600 hover:text-black"
+        >
+          ✕
+        </button>
 
         {/* LEFT IMAGE */}
-        <div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex flex-col justify-center items-center p-10 hidden md:flex">
+        <div className="w-1/2 bg-gradient-to-r from-[#062B5B] to-blue-600 text-white flex-col justify-center items-center p-10 hidden md:flex">
           <img
             src="https://img.freepik.com/free-vector/programming-concept-illustration_114360-1351.jpg"
             alt="signup illustration"
@@ -130,7 +132,6 @@ export default function Signup() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* NAME */}
             <div>
               <label className="text-sm text-gray-600">Full Name</label>
               <input
@@ -146,7 +147,6 @@ export default function Signup() {
               )}
             </div>
 
-            {/* EMAIL */}
             <div>
               <label className="text-sm text-gray-600">Email</label>
               <input
@@ -162,7 +162,6 @@ export default function Signup() {
               )}
             </div>
 
-            {/* PHONE */}
             <div>
               <label className="text-sm text-gray-600">Phone Number</label>
               <input
@@ -179,7 +178,6 @@ export default function Signup() {
               )}
             </div>
 
-            {/* PASSWORD */}
             <div>
               <label className="text-sm text-gray-600">Password</label>
               <div className="relative mt-1">

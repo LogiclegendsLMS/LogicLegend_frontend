@@ -27,19 +27,19 @@ const AdminTopbar = () => {
   };
 
   const handleLogout = () => {
-    // Clear token / session here
     localStorage.removeItem("adminToken");
     navigate("/login");
   };
 
   return (
-    <header className="h-20 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
+    // Height reduced to h-16 for a more professional look
+    <header className="h-16 w-full bg-white/80 backdrop-blur-md border-b border-gray-50 flex items-center justify-between px-6 md:px-8 sticky top-0 z-40">
       
-      {/* LEFT SEARCH */}
-      <div className="relative w-96 group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      {/* LEFT SEARCH - More Compact */}
+      <div className="relative w-64 md:w-80 group">
+        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
           <Search
-            size={18}
+            size={16}
             className="text-gray-400 group-focus-within:text-[#FFD902] transition-colors"
           />
         </div>
@@ -47,121 +47,101 @@ const AdminTopbar = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="block w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FFD902]/30 focus:border-[#FFD902] transition-all text-sm"
-          placeholder="Search for courses, students, or analytics..."
+          className="block w-full pl-10 pr-3 py-2 bg-gray-50/50 border border-transparent rounded-xl focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#FFD902] transition-all text-[12px] font-medium placeholder:text-gray-400"
+          placeholder="Search for courses, analytics..."
         />
       </div>
 
       {/* RIGHT SECTION */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2 md:gap-4">
 
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2.5 rounded-xl hover:bg-gray-50 text-gray-500 transition-all"
-        >
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        {/* Theme & Notifications */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2 rounded-lg hover:bg-gray-50 text-gray-400 transition-all"
+          >
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
 
-        {/* Notifications */}
-        <div className="relative cursor-pointer group">
-           <button
-                    onClick={() => handleNavigate("/admin/notification")}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-gray-600 hover:bg-[#FFFDF5] hover:text-[#FFD902] rounded-xl transition-all"
-            >
-          <div className="p-2.5 rounded-xl hover:bg-gray-50 text-gray-500 transition-all">
-            <Bell size={20} />
-            
-            <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
+          <button
+            onClick={() => handleNavigate("/admin/notification")}
+            className="p-2 rounded-lg hover:bg-gray-50 text-gray-400 relative transition-all"
+          >
+            <Bell size={18} />
+            <span className="absolute top-2 right-2 flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 border-2 border-white"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
             </span>
-          </div>
           </button>
         </div>
 
-        {/* PROFILE SECTION */}
+        {/* PROFILE SECTION - Minimalist style */}
         <div className="relative">
-          <motion.div
+          <div
             onClick={() => setIsProfileOpen(!isProfileOpen)}
             className="flex items-center gap-3 pl-4 border-l border-gray-100 cursor-pointer group"
           >
             <div className="text-right hidden md:block">
-              <p className="text-sm font-black text-[#1E293B]">Rahul Kumar</p>
-              <p className="text-[11px] font-bold text-gray-400 uppercase">
+              <p className="text-[13px] font-black text-slate-800 leading-tight">Rahul Kumar</p>
+              <p className="text-[9px] font-black text-gray-400 uppercase tracking-wider">
                 Super Admin
               </p>
             </div>
 
             <div className="relative">
-              <div className="w-11 h-11 rounded-2xl bg-gray-100 border-2 border-white overflow-hidden shadow-sm group-hover:border-[#FFD902] transition-all duration-300">
+              <div className="w-9 h-9 rounded-xl bg-slate-100 overflow-hidden border border-transparent group-hover:border-[#FFD902] transition-all">
                 <img
                   src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
                   alt="Admin"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
             </div>
 
             <ChevronDown
-              size={16}
-              className={`text-gray-400 transition-transform duration-300 ${
-                isProfileOpen ? "rotate-180" : ""
-              }`}
+              size={14}
+              className={`text-gray-400 transition-transform ${isProfileOpen ? "rotate-180" : ""}`}
             />
-          </motion.div>
+          </div>
 
           {/* DROPDOWN */}
           <AnimatePresence>
             {isProfileOpen && (
               <motion.div
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 15 }}
-                className="absolute right-0 mt-4 w-64 bg-white rounded-[24px] shadow-xl border border-gray-50 p-2"
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-50 p-1.5"
               >
-                <div className="px-4 py-4 border-b border-gray-50 mb-2">
-                  <p className="text-xs font-bold text-gray-400 uppercase">
-                    Welcome back!
-                  </p>
-                  <p className="text-sm font-black text-[#1E293B]">
-                    rahul.admin@eduvion.com
-                  </p>
+                <div className="px-3 py-3 border-b border-gray-50 mb-1">
+                  <p className="text-[12px] font-black text-slate-800">rahul.admin@eduvion.com</p>
                 </div>
 
-                <div className="space-y-1">
-                  <button
-                    onClick={() => handleNavigate("/admin/adminprofile")}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-gray-600 hover:bg-[#FFFDF5] hover:text-[#FFD902] rounded-xl transition-all"
-                  >
-                    <User size={18} />
-                    My Profile
-                  </button>
-
-                  <button
-                    onClick={() => handleNavigate("/admin/adminsettings")}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-gray-600 hover:bg-[#FFFDF5] hover:text-[#FFD902] rounded-xl transition-all"
-                  >
-                    <Settings size={18} />
-                    Settings
-                  </button>
-
-                  <button
-                    onClick={() => handleNavigate("/admin/help")}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-gray-600 hover:bg-[#FFFDF5] hover:text-[#FFD902] rounded-xl transition-all"
-                  >
-                    <HelpCircle size={18} />
-                    Help Center
-                  </button>
+                <div className="space-y-0.5">
+                  {[
+                    { label: "My Profile", icon: User, path: "/admin/adminprofile" },
+                    { label: "Settings", icon: Settings, path: "/admin/adminsettings" },
+                    { label: "Help Center", icon: HelpCircle, path: "/admin/help" },
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleNavigate(item.path)}
+                      className="w-full flex items-center gap-3 px-3 py-2 text-[12px] font-bold text-gray-500 hover:bg-gray-50 hover:text-slate-900 rounded-lg transition-all"
+                    >
+                      <item.icon size={16} />
+                      {item.label}
+                    </button>
+                  ))}
                 </div>
 
-                <div className="mt-2 pt-2 border-t border-gray-50">
+                <div className="mt-1 pt-1 border-t border-gray-50">
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                    className="w-full flex items-center gap-3 px-3 py-2 text-[12px] font-bold text-red-500 hover:bg-red-50 rounded-lg transition-all"
                   >
-                    <LogOut size={18} />
+                    <LogOut size={16} />
                     Log Out
                   </button>
                 </div>

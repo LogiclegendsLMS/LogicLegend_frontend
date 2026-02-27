@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Edit, Save, X, Camera, Lock, Mail, Phone, ShieldCheck, BadgeCheck } from "lucide-react";
+import { Edit, Save, X, Camera, Lock, Mail, Phone, ShieldCheck, BadgeCheck, CheckCircle2 } from "lucide-react";
 
 const AdminProfile = () => {
-  /* ================= STATE ================= */
   const [editMode, setEditMode] = useState(false);
   const [profile, setProfile] = useState({
     name: "Admin User",
@@ -11,163 +10,120 @@ const AdminProfile = () => {
     phone: "+91 98765 43210",
     role: "Super Admin",
     status: "Active",
-    image: "https://i.pravatar.cc/150?img=3",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
   });
 
   const [tempProfile, setTempProfile] = useState(profile);
   const [passwordForm, setPasswordForm] = useState({ current: "", newPass: "", confirm: "" });
 
-  /* ================= HANDLERS ================= */
   const handleSave = () => {
     setProfile(tempProfile);
     setEditMode(false);
-    // Add a professional toast notification logic here if needed
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setTempProfile({ ...tempProfile, image: imageUrl });
-    }
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-10 font-sans text-slate-900">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8 font-sans text-slate-900">
+      <div className="max-w-4xl mx-auto">
         
         {/* --- HEADER --- */}
-        <div className="mb-10 flex justify-between items-end">
+        <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <h1 className="text-4xl font-[1000] text-[#0F2F57] tracking-tighter uppercase">
-              Account <span className="text-[#F4B400]">Settings</span>
+            <h1 className="text-2xl font-[1000] text-[#0F2F57] tracking-tighter uppercase leading-tight">
+              Account <span className="text-[#FFD902]">Settings</span>
             </h1>
-            <p className="text-slate-400 font-bold text-[11px] tracking-[0.2em] mt-2">Manage your administrative identity</p>
+            <p className="text-slate-400 font-black text-[9px] tracking-[0.2em] mt-1 uppercase">Manage administrative identity</p>
           </div>
-          <div className="hidden md:block">
-             <span className="bg-emerald-100 text-emerald-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                <BadgeCheck size={14} /> Identity Verified
-             </span>
+          <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-lg border border-emerald-100">
+            <BadgeCheck size={14} />
+            <span className="text-[9px] font-black uppercase tracking-widest">Identity Verified</span>
           </div>
         </div>
 
         {/* --- PROFILE MAIN CARD --- */}
-        <div className="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden mb-8">
-          <div className="h-32 bg-[#0F2F57] relative">
-             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <div className="bg-white rounded-[30px] shadow-sm border border-slate-100 overflow-hidden mb-6">
+          <div className="h-24 bg-[#0F2F57] relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
           </div>
           
-          <div className="px-8 pb-10">
-            <div className="flex flex-col md:flex-row gap-8 items-start -mt-12 relative z-10">
+          <div className="px-6 md:px-8 pb-8">
+            <div className="flex flex-col md:flex-row gap-6 items-start -mt-10 relative z-10">
               
               {/* IMAGE SECTION */}
-              <div className="relative group">
-                <div className="w-40 h-40 rounded-[35px] overflow-hidden border-[6px] border-white shadow-xl relative">
-                   <img
-                    src={editMode ? tempProfile.image : profile.image}
-                    alt="profile"
-                    className="w-full h-full object-cover"
-                  />
+              <div className="relative group mx-auto md:mx-0">
+                <div className="w-32 h-32 rounded-[24px] overflow-hidden border-[4px] border-white shadow-lg relative">
+                  <img src={editMode ? tempProfile.image : profile.image} alt="profile" className="w-full h-full object-cover" />
                   <AnimatePresence>
                     {editMode && (
-                      <motion.label 
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer backdrop-blur-sm transition-all"
-                      >
-                        <Camera size={32} className="text-white" />
-                        <input type="file" hidden onChange={handleImageUpload} />
+                      <motion.label initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer backdrop-blur-sm">
+                        <Camera size={24} className="text-white" />
+                        <input type="file" hidden />
                       </motion.label>
                     )}
                   </AnimatePresence>
                 </div>
                 {!editMode && (
-                   <div className="absolute -bottom-2 -right-2 bg-[#F4B400] text-white p-2 rounded-xl shadow-lg border-4 border-white">
-                      <ShieldCheck size={18} strokeWidth={3} />
-                   </div>
+                  <div className="absolute -bottom-1 -right-1 bg-[#FFD902] text-black p-1.5 rounded-lg shadow-md border-2 border-white">
+                    <ShieldCheck size={14} strokeWidth={3} />
+                  </div>
                 )}
               </div>
 
               {/* INFO SECTION */}
-              <div className="flex-1 pt-14">
-                <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-                  <div>
-                    <h2 className="text-3xl font-[1000] text-[#0F2F57] tracking-tight">
-                      {profile.name}
-                    </h2>
-                    <p className="text-[#F4B400] font-black uppercase text-xs tracking-widest italic">{profile.role}</p>
+              <div className="flex-1 pt-2 md:pt-12 w-full">
+                <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+                  <div className="text-center md:text-left">
+                    <h2 className="text-xl font-black text-[#0F2F57] tracking-tight">{profile.name}</h2>
+                    <p className="text-[#FFD902] font-black uppercase text-[10px] tracking-[0.15em]">{profile.role}</p>
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 w-full md:w-auto">
                     {!editMode ? (
-                      <button
-                        onClick={() => setEditMode(true)}
-                        className="bg-slate-100 text-[#0F2F57] px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#F4B400] hover:text-white transition-all flex items-center gap-2"
-                      >
-                        <Edit size={16} /> Edit Profile
+                      <button onClick={() => setEditMode(true)} className="flex-1 md:flex-none bg-slate-50 text-[#0F2F57] px-4 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#FFD902] transition-all flex items-center justify-center gap-2">
+                        <Edit size={14} /> Edit
                       </button>
                     ) : (
-                      <>
-                        <button onClick={handleSave} className="bg-[#F4B400] text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-yellow-200 flex items-center gap-2 transition-all hover:scale-105">
-                          <Save size={16} /> Save Changes
+                      <div className="flex gap-2 w-full">
+                        <button onClick={handleSave} className="flex-1 bg-[#FFD902] text-black px-4 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-yellow-100 flex items-center justify-center gap-2">
+                          <Save size={14} /> Save
                         </button>
-                        <button onClick={() => { setTempProfile(profile); setEditMode(false); }} className="bg-slate-100 text-slate-400 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">
-                          <X size={16} />
+                        <button onClick={() => setEditMode(false)} className="bg-slate-50 text-slate-400 p-2.5 rounded-xl">
+                          <X size={14} />
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        disabled={!editMode}
-                        value={editMode ? tempProfile.name : profile.name}
-                        onChange={(e) => setTempProfile({...tempProfile, name: e.target.value})}
-                        className={`w-full p-4 rounded-2xl font-bold border-2 transition-all outline-none ${editMode ? 'bg-slate-50 border-[#F4B400]' : 'bg-white border-transparent text-slate-500'}`}
-                      />
+                {/* FIELDS GRID */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { label: "Full Name", value: editMode ? tempProfile.name : profile.name, key: "name", icon: null },
+                    { label: "Official Email", value: editMode ? tempProfile.email : profile.email, key: "email", icon: <Mail size={14} /> },
+                    { label: "Phone Number", value: editMode ? tempProfile.phone : profile.phone, key: "phone", icon: <Phone size={14} /> },
+                    { label: "Status", value: profile.status, key: "status", isStatus: true },
+                  ].map((field, i) => (
+                    <div key={i} className="space-y-1">
+                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-1">{field.label}</label>
+                      {field.isStatus ? (
+                        <div className="pt-1">
+                          <span className="bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tight inline-flex items-center gap-1.5">
+                            <CheckCircle2 size={10} /> {field.value} Account
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          <input
+                            type="text"
+                            disabled={!editMode}
+                            value={field.value}
+                            onChange={(e) => setTempProfile({...tempProfile, [field.key]: e.target.value})}
+                            className={`w-full px-4 py-2.5 rounded-xl text-[13px] font-bold border-2 transition-all outline-none ${editMode ? 'bg-slate-50 border-[#FFD902]/50' : 'bg-transparent border-transparent text-slate-500'}`}
+                          />
+                          {field.icon && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">{field.icon}</div>}
+                        </div>
+                      )}
                     </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Official Email</label>
-                    <div className="relative">
-                      <input
-                        type="email"
-                        disabled={!editMode}
-                        value={editMode ? tempProfile.email : profile.email}
-                        onChange={(e) => setTempProfile({...tempProfile, email: e.target.value})}
-                        className={`w-full p-4 rounded-2xl font-bold border-2 transition-all outline-none ${editMode ? 'bg-slate-50 border-[#F4B400]' : 'bg-white border-transparent text-slate-500'}`}
-                      />
-                      <Mail size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        disabled={!editMode}
-                        value={editMode ? tempProfile.phone : profile.phone}
-                        onChange={(e) => setTempProfile({...tempProfile, phone: e.target.value})}
-                        className={`w-full p-4 rounded-2xl font-bold border-2 transition-all outline-none ${editMode ? 'bg-slate-50 border-[#F4B400]' : 'bg-white border-transparent text-slate-500'}`}
-                      />
-                      <Phone size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Account Status</label>
-                    <div className="pt-3">
-                      <span className="bg-emerald-500 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter">
-                         ● {profile.status} Account
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -175,29 +131,25 @@ const AdminProfile = () => {
         </div>
 
         {/* --- PASSWORD SECURITY SECTION --- */}
-        <div className="bg-[#0F2F57] rounded-[40px] p-10 shadow-2xl relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-64 h-64 bg-[#F4B400] opacity-5 rounded-full -mr-20 -mt-20" />
-          
-          <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3 relative z-10">
-            <Lock className="text-[#F4B400]" /> Security Access
+        <div className="bg-[#0F2F57] rounded-[30px] p-6 md:p-8 shadow-xl relative overflow-hidden">
+          <div className="absolute right-0 top-0 w-32 h-32 bg-[#FFD902] opacity-5 rounded-full -mr-10 -mt-10" />
+          <h2 className="text-[14px] font-black text-white mb-6 flex items-center gap-2 relative z-10 uppercase tracking-wider">
+            <Lock size={16} className="text-[#FFD902]" /> Security Access
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6 relative z-10">
-             {['current', 'newPass', 'confirm'].map((field) => (
-               <div key={field}>
-                 <input
-                    type="password"
-                    placeholder={field === 'current' ? "Current Password" : field === 'newPass' ? "New Password" : "Confirm New Password"}
-                    value={passwordForm[field]}
-                    onChange={(e) => setPasswordForm({...passwordForm, [field]: e.target.value})}
-                    className="w-full bg-white/10 border-2 border-white/5 rounded-2xl p-4 text-white font-bold placeholder:text-white/30 outline-none focus:border-[#F4B400] transition-all"
-                 />
-               </div>
-             ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+            {['Current Password', 'New Password', 'Confirm Password'].map((placeholder, idx) => (
+              <input
+                key={idx}
+                type="password"
+                placeholder={placeholder}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-[12px] text-white font-bold placeholder:text-white/20 outline-none focus:border-[#FFD902]/50 transition-all"
+              />
+            ))}
           </div>
 
-          <button className="mt-8 bg-white text-[#0F2F57] px-8 py-4 rounded-2xl font-[1000] text-xs uppercase tracking-[0.2em] hover:bg-[#F4B400] hover:text-white transition-all shadow-xl">
-             Update Access Keys
+          <button className="mt-6 bg-[#FFD902] text-black px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.15em] hover:scale-[1.02] transition-all shadow-lg active:scale-95">
+            Update Access Keys
           </button>
         </div>
 

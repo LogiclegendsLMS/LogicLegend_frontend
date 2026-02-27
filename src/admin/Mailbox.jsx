@@ -2,15 +2,14 @@ import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, Mail, Send, FileText, AlertTriangle, 
-  Star, Trash2, Archive, MoreVertical, Reply 
+  Star, Trash2, Archive, MoreVertical, Reply, X
 } from "lucide-react";
 
 const Mailbox = () => {
-  // Brand Color
   const primaryYellow = "#FFD902";
 
-  // Dummy Data Generator (Enhanced with Avatars)
-  const [messages] = useState(Array.from({ length: 20 }, (_, i) => ({
+  // --- STATE ---
+  const [messages, setMessages] = useState(Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     sender: ["Rahul Sharma", "Anita Verma", "John Mathew", "Priya Singh"][i % 4],
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`,
@@ -18,20 +17,82 @@ const Mailbox = () => {
     message: "Bhai, I am facing an issue with the new React course enrollment. Can you please check if the payment was successful? Also, need the invoice for the same.",
     time: "10:25 AM",
     unread: i < 3,
-    starred: i % 5 === 0
+    starred: i % 5 === 0,
+    category: i < 15 ? "Inbox" : "Sent"
   })));
 
-  const [selected, setSelected] = useState(messages[0]);
+  const [selectedId, setSelectedId] = useState(messages[0]?.id);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("Inbox");
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyText, setReplyText] = useState("");
+
+  // --- DERIVED STATE ---
+  const selected = messages.find(m => m.id === selectedId);
+  
+  // Dynamic Counts for Sidebar
+  const counts = {
+    Inbox: messages.filter(m => m.unread && m.category === "Inbox").length,
+    Trash: messages.filter(m => m.category === "Trash").length
+  };
 
   const filteredMessages = useMemo(() => {
-    return messages.filter(
-      (msg) =>
-        msg.sender.toLowerCase().includes(search.toLowerCase()) ||
-        msg.subject.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, messages]);
+    return messages.filter((msg) => {
+      const matchesSearch = msg.sender.toLowerCase().includes(search.toLowerCase()) ||
+                            msg.subject.toLowerCase().includes(search.toLowerCase());
+      const matchesTab = msg.category === activeTab;
+      return matchesSearch && matchesTab;
+    });
+  }, [search, messages, activeTab]);
+
+  // --- HANDLERS ---
+  const handleSelectMessage = (msg) => {
+    setSelectedId(msg.id);
+    setIsReplying(false); // Reset reply state when switching
+    if (msg.unread) {
+      setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, unread: false } : m));
+    }
+  };
+
+  const toggleStar = (id) => {
+    setMessages(prev => prev.map(m => m.id === id ? { ...m, starred: !m.starred } : m));
+  };
+
+  const deleteMessage = (id) => {
+    const msgToDelete = messages.find(m => m.id === id);
+    if (msgToDelete.category === "Trash") {
+      // Permanent Delete if already in Trash
+      if(window.confirm("Delete permanently?")) {
+        setMessages(prev => prev.filter(m => m.id !== id));
+        setSelectedId(null);
+      }
+    } else {
+      // Move to Trash
+      setMessages(prev => prev.map(m => m.id === id ? { ...m, category: "Trash" } : m));
+      setSelectedId(null);
+    }
+  };
+
+  const handleSendReply = () => {
+    if (!replyText.trim()) return;
+    
+    const newReply = {
+      id: Date.now(),
+      sender: "Me (Admin)",
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=admin`,
+      subject: `Re: ${selected.subject}`,
+      message: replyText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      unread: false,
+      starred: false,
+      category: "Sent"
+    };
+
+    setMessages([newReply, ...messages]);
+    setReplyText("");
+    setIsReplying(false);
+    alert("Reply Sent!");
+  };
 
   return (
     <div className="flex h-[82vh] bg-white rounded-[32px] shadow-sm border border-gray-100 overflow-hidden">
@@ -42,15 +103,15 @@ const Mailbox = () => {
         
         <div className="space-y-2 flex-1">
           {[
-            { name: 'Inbox', icon: <Mail size={18} />, count: 3 },
+            { name: 'Inbox', icon: <Mail size={18} />, count: counts.Inbox },
             { name: 'Sent', icon: <Send size={18} /> },
             { name: 'Drafts', icon: <FileText size={18} /> },
             { name: 'Spam', icon: <AlertTriangle size={18} /> },
-            { name: 'Trash', icon: <Trash2 size={18} /> },
+            { name: 'Trash', icon: <Trash2 size={18} />, count: counts.Trash },
           ].map((item) => (
             <button
               key={item.name}
-              onClick={() => setActiveTab(item.name)}
+              onClick={() => { setActiveTab(item.name); setSelectedId(null); }}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 ${
                 activeTab === item.name 
                 ? "bg-white shadow-sm text-black font-bold" 
@@ -61,7 +122,7 @@ const Mailbox = () => {
                 <span className={activeTab === item.name ? "text-[#FFD902]" : ""}>{item.icon}</span>
                 <span className="text-sm">{item.name}</span>
               </div>
-              {item.count && (
+              {item.count > 0 && (
                 <span className="bg-[#FFD902] text-[10px] font-black px-2 py-0.5 rounded-lg shadow-sm">
                   {item.count}
                 </span>
@@ -70,7 +131,6 @@ const Mailbox = () => {
           ))}
         </div>
 
-        {/* Storage Info Card */}
         <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-[10px] font-bold text-gray-400 uppercase mb-2">Storage</p>
           <div className="w-full bg-gray-100 h-1.5 rounded-full mb-2">
@@ -87,7 +147,7 @@ const Mailbox = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#FFD902] transition-colors" size={16} />
             <input
               type="text"
-              placeholder="Search conversations..."
+              placeholder={`Search in ${activeTab}...`}
               className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-[#FFD902] outline-none text-sm transition-all"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -96,33 +156,40 @@ const Mailbox = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto no-scrollbar">
-          {filteredMessages.map((msg) => (
-            <div
-              key={msg.id}
-              onClick={() => setSelected(msg)}
-              className={`p-5 border-b border-gray-50 cursor-pointer transition-all relative ${
-                selected?.id === msg.id ? "bg-[#FFFDF5]" : "hover:bg-gray-50/50"
-              }`}
-            >
-              {selected?.id === msg.id && (
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FFD902]" />
-              )}
-              
-              <div className="flex gap-4">
-                <img src={msg.avatar} alt="" className="w-10 h-10 rounded-xl bg-gray-100 border border-gray-50" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start mb-1">
-                    <p className={`text-sm truncate ${msg.unread ? "font-black text-black" : "font-bold text-gray-500"}`}>
-                      {msg.sender}
-                    </p>
-                    <span className="text-[10px] font-bold text-gray-400 whitespace-nowrap">{msg.time}</span>
+          <AnimatePresence mode="popLayout">
+            {filteredMessages.length > 0 ? filteredMessages.map((msg) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                key={msg.id}
+                onClick={() => handleSelectMessage(msg)}
+                className={`p-5 border-b border-gray-50 cursor-pointer transition-all relative ${
+                  selectedId === msg.id ? "bg-[#FFFDF5]" : "hover:bg-gray-50/50"
+                }`}
+              >
+                {selectedId === msg.id && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#FFD902]" />
+                )}
+                <div className="flex gap-4">
+                  <img src={msg.avatar} alt="" className="w-10 h-10 rounded-xl bg-gray-100 border border-gray-50" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-1">
+                      <p className={`text-sm truncate ${msg.unread ? "font-black text-black" : "font-bold text-gray-500"}`}>
+                        {msg.sender}
+                      </p>
+                      <span className="text-[10px] font-bold text-gray-400 whitespace-nowrap">{msg.time}</span>
+                    </div>
+                    <p className="text-xs font-bold text-gray-800 truncate mb-1">{msg.subject}</p>
+                    <p className="text-xs text-gray-400 truncate leading-relaxed">{msg.message}</p>
                   </div>
-                  <p className="text-xs font-bold text-gray-800 truncate mb-1">{msg.subject}</p>
-                  <p className="text-xs text-gray-400 truncate leading-relaxed">{msg.message}</p>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            )) : (
+              <div className="p-10 text-center text-gray-400 text-sm font-bold">No messages in {activeTab}</div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -130,12 +197,22 @@ const Mailbox = () => {
       <div className="flex-1 flex flex-col bg-white">
         {selected ? (
           <>
-            {/* Toolbar */}
             <div className="p-4 border-b border-gray-50 flex justify-between items-center px-8">
               <div className="flex items-center gap-2">
                 <button className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 transition-colors"><Archive size={18}/></button>
-                <button className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 transition-colors"><Trash2 size={18}/></button>
-                <button className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 transition-colors"><Star size={18}/></button>
+                <button 
+                  onClick={() => deleteMessage(selected.id)}
+                  className="p-2 hover:bg-red-50 rounded-lg text-gray-400 hover:text-red-500 transition-colors"
+                  title={activeTab === 'Trash' ? "Delete Permanently" : "Move to Trash"}
+                >
+                  <Trash2 size={18}/>
+                </button>
+                <button 
+                  onClick={() => toggleStar(selected.id)}
+                  className={`p-2 hover:bg-yellow-50 rounded-lg transition-colors ${selected.starred ? "text-yellow-500" : "text-gray-400"}`}
+                >
+                  <Star size={18} fill={selected.starred ? primaryYellow : "none"}/>
+                </button>
               </div>
               <button className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 transition-colors"><MoreVertical size={18}/></button>
             </div>
@@ -153,28 +230,54 @@ const Mailbox = () => {
                   <span className="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg">{selected.time}</span>
                 </div>
 
-                <h4 className="text-2xl font-black text-black mb-6 leading-tight">
-                  {selected.subject}
-                </h4>
+                <h4 className="text-2xl font-black text-black mb-6 leading-tight">{selected.subject}</h4>
 
-                <div className="bg-gray-50/50 rounded-[32px] p-8 border border-gray-50">
-                  <p className="text-md leading-[1.8] text-gray-600 font-medium">
-                    {selected.message}
-                  </p>
+                <div className="bg-gray-50/50 rounded-[32px] p-8 border border-gray-50 mb-8">
+                  <p className="text-md leading-[1.8] text-gray-600 font-medium">{selected.message}</p>
                 </div>
 
-                {/* Reply Section */}
-                <div className="mt-8 flex gap-4">
-                   <button 
-                    className="px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-lg shadow-yellow-100 transition-transform active:scale-95"
-                    style={{ backgroundColor: primaryYellow }}
-                   >
-                     <Reply size={18}/> Reply Now
-                   </button>
-                   <button className="px-6 py-3 rounded-2xl font-black text-sm text-gray-500 border border-gray-100 hover:bg-gray-50 transition-all">
-                     Forward
-                   </button>
-                </div>
+                {/* REPLY AREA */}
+                <AnimatePresence>
+                  {isReplying ? (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="border-2 border-[#FFD902] rounded-[32px] p-6 bg-white shadow-xl mb-8"
+                    >
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-sm font-black text-gray-800">Replying to {selected.sender}...</span>
+                        <button onClick={() => setIsReplying(false)} className="text-gray-400 hover:text-black"><X size={20}/></button>
+                      </div>
+                      <textarea 
+                        className="w-full h-32 outline-none resize-none text-gray-600 font-medium"
+                        placeholder="Type your message here..."
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                      />
+                      <div className="flex justify-end mt-4">
+                        <button 
+                          onClick={handleSendReply}
+                          className="px-8 py-3 bg-[#FFD902] rounded-2xl font-black text-sm shadow-lg shadow-yellow-100 active:scale-95 transition-all"
+                        >
+                          Send Message
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={() => setIsReplying(true)}
+                        className="px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-lg shadow-yellow-100 transition-transform active:scale-95"
+                        style={{ backgroundColor: primaryYellow }}
+                      >
+                        <Reply size={18}/> Reply Now
+                      </button>
+                      <button className="px-6 py-3 rounded-2xl font-black text-sm text-gray-500 border border-gray-100 hover:bg-gray-50 transition-all">
+                        Forward
+                      </button>
+                    </div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </>
@@ -184,7 +287,7 @@ const Mailbox = () => {
                <Mail size={80} className="text-gray-200" />
             </div>
             <h3 className="text-xl font-black text-gray-800">No message selected</h3>
-            <p className="text-sm text-gray-400 mt-2">Pick a conversation from the list to start reading.</p>
+            <p className="text-sm text-gray-400 mt-2">Choose a message to view its content.</p>
           </div>
         )}
       </div>

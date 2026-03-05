@@ -26,6 +26,16 @@ import Home from "./pages/Home";
 import Login from "./components/Login";
 import Signup from "./components/signup";
 import AllUser from "./admin/AllUser";
+import StudentLayout from "./user/StudentLayout";
+import StudentDashboard from "./user/StudentDashboard";
+import LiveClassesPage from "./user/LiveClassesPage";
+import MyCoursesPage from "./user/MyCoursesPage";
+import AssignmentPage from "./user/AssignmentPage";
+import QuizPage from "./user/QuizPage";
+import ResultPage from "./user/ResultPage";
+import AnnouncementsPage from "./user/AnnouncementsPage";
+import StudentProfile from "./user/StudentProfile";
+import NotificationPage from "./user/NotificationPage";
 
 export default function App() {
   const [showApp, setShowApp] = useState(false);
@@ -74,6 +84,20 @@ export default function App() {
             <Route path="help" element={<HelpCenter/>}/>
             <Route path="notification" element={<NotificationCenter/>}/>
 
+        </Route>
+
+        <Route path="/student" element={<StudentLayout/>}>
+        <Route index element={<StudentDashboard/>}/>
+        <Route path="live" element={<LiveClassesPage/>}/>
+        <Route path="courses" element={<MyCoursesPage/>}/>
+        <Route path="assignments" element={<AssignmentPage/>}/>
+        <Route path="quizzes" element={<QuizPage/>}/>
+        <Route path="results" element={<ResultPage/>}/>
+        <Route path="announcements" element={<AnnouncementsPage/>}/>
+        <Route path="profile" element={<StudentProfile/>}/>
+        <Route path="notification" element={<NotificationPage/>}/>
+        
+        
         </Route>
       </Routes>
     </BrowserRouter>

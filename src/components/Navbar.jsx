@@ -94,7 +94,11 @@ export default function Navbar() {
           </button>
           <NavLink to={"/admin"}>
             <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
-              Sign up
+              admin
+            </button></NavLink>
+             <NavLink to={"/student"}>
+            <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
+              Student
             </button></NavLink>
         </div>
 

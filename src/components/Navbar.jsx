@@ -89,9 +89,9 @@ export default function Navbar() {
             </button>
 
           </NavLink>
-          <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
+          {/* <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
             Request a demo
-          </button>
+          </button> */}
           <NavLink to={"/admin"}>
             <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
               admin
@@ -100,7 +100,15 @@ export default function Navbar() {
             <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
               Student
             </button></NavLink>
+              <NavLink to={"/subadmin"}>
+            <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
+              SubAdmin
+            </button></NavLink>
         </div>
+          <NavLink to={"/teacher"}>
+            <button className="px-5 py-2 text-sm text-white bg-yellow-500 rounded-full hover:bg-yellow-600 transition transform hover:scale-105">
+              Teacher
+            </button></NavLink>
 
         {/* Mobile Hamburger */}
         <button className="lg:hidden z-50" onClick={() => setOpen(!open)}>

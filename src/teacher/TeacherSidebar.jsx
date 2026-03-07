@@ -1,0 +1,132 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+import {
+
+  LayoutDashboard,
+  Users,
+  UserCheck,
+  BookOpen,
+  FileCheck,
+  ClipboardList,
+  Video,
+  BarChart,
+  Bell,
+  Settings,
+  ChevronRight,
+  PlusCircle,
+  LogOut
+} from "lucide-react";
+
+import logo from "../assets/image.png";
+
+const TeacherSidebar = () => {
+
+const menuGroups = [
+  {
+    title: "OVERVIEW",
+    items: [
+      { name: "Dashboard", icon: LayoutDashboard, path: "/teacher" },
+      { name: "Analytics", icon: BarChart , path: "/teacher/analytics" },
+    ]
+  },
+  {
+    title: "COURSE MANAGEMENT",
+    items: [
+      { name: "My Courses", icon: BookOpen, path: "/teacher/courses" },
+    ]
+  },
+  {
+    title: "ACADEMICS",
+    items: [
+      { name: "Students", icon: Users, path: "/teacher/students" },
+      { name: "Assignments", icon: ClipboardList, path: "/teacher/assignments" },
+      { name: "Live Classes", icon: Video, path: "/teacher/live" },
+    ]
+  },
+  {
+    title: "COMMUNICATION",
+    items: [
+      { name: "Announcements", icon: Bell, path: "/teacher/announcements" },
+    ]
+  },
+  {
+    title: "ACCOUNT",
+    items: [
+      { name: "Profile", icon: Users, path: "/teacher/profile" },
+      { name: "Settings", icon: Settings, path: "/teacher/settings" },
+    ]
+  }
+];
+  return (
+    <aside className="w-64 h-screen bg-white border-r border-gray-100 left-0 top-0 flex flex-col z-50">
+      
+      {/* LOGO */}
+      <div className="p-8 flex items-center gap-3">
+        <img src={logo} alt="eduvion" className="h-8 w-auto object-contain" />
+        <span className="text-2xl font-black text-[#1A2238] tracking-tight">
+          Edu<span className="text-yellow-400">vion</span>
+        </span>
+      </div>
+
+      {/* NAVIGATION */}
+      <nav className="flex-1 px-4 overflow-y-auto space-y-7 py-4">
+        {menuGroups.map((group, idx) => (
+          <div key={idx}>
+            <p className="text-[10px] font-bold text-gray-400 tracking-[0.2em] px-4 mb-4 uppercase">
+              {group.title}
+            </p>
+
+            <div className="space-y-1">
+              {group.items.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={({ isActive }) => `
+                    flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 group
+                    ${isActive 
+                      ? "bg-white shadow-[0_10px_25px_rgba(0,0,0,0.06)] text-[#1A2238] border-l-4 border-yellow-400 font-bold" 
+                      : "text-gray-500 hover:bg-gray-50 hover:text-[#1A2238]"}
+                  `}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <item.icon 
+                          size={20} 
+                          className={isActive ? "text-yellow-400" : "text-gray-400 group-hover:text-yellow-400 transition-colors"} 
+                        />
+                        <span className={`text-[13px] font-bold ${isActive ? 'text-slate-900' : 'text-gray-500 group-hover:text-slate-800'}`}>
+                          {item.name}
+                        </span>
+                      </div>
+
+                      <ChevronRight
+                        size={14}
+                        className={`transition-all duration-300 ${
+                          isActive
+                            ? "opacity-100 translate-x-0 text-yellow-500"
+                            : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      {/* LOGOUT */}
+      <div className="p-6 border-t border-gray-50">
+        <button className="w-full flex items-center gap-3 px-4 py-3 text-red-500 font-bold hover:bg-red-50 rounded-2xl transition-all group">
+          <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm tracking-wider">LOGOUT</span>
+        </button>
+      </div>
+
+    </aside>
+  );
+};
+
+export default TeacherSidebar;

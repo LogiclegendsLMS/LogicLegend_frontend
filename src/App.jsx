@@ -36,6 +36,27 @@ import ResultPage from "./user/ResultPage";
 import AnnouncementsPage from "./user/AnnouncementsPage";
 import StudentProfile from "./user/StudentProfile";
 import NotificationPage from "./user/NotificationPage";
+import SubAdminLayout from "./subadmin/SubAdminLayout";
+import SubAdminDashboard from "./subadmin/SubAdminDashboard";
+import SubAdminAnalytics from "./subadmin/SubAdminAnalytics";
+import SubAdminStudent from "./subadmin/SubAdminStudent";
+import SubAdminTeachers from "./subadmin/SubAdminTeachers";
+import SubAdminCourseApproval from "./subadmin/SubAdminCourseApproval";
+import SubAdminAssignments from "./subadmin/SubAdminAssignments";
+import SubAdminLiveClasses from "./subadmin/SubAdminLiveClasses";
+import SubAdminAnnouncements from "./subadmin/SubAdminAnnouncements";
+import SubAdminSettings from "./subadmin/SubAdminSettings";
+import TeacherDashboardOverview from "./teacher/TeacherDashboardOverview";
+import TeacherSidebar from "./teacher/TeacherSidebar";
+import TeacherLayout from "./teacher/TeacherLayout";
+import SubAdminProfile from "./subadmin/SubAdminProfile";
+import TeacherAnalytics from "./teacher/TeacherAnalytics";
+import TeacherCourses from "./teacher/TeacherCourses";
+import TeacherStudents from "./teacher/TeacherStudents";
+import TeacherAssignments from "./teacher/TeacherAssignments";
+import TeacherLiveClasses from "./teacher/TeacherLiveClasses";
+import TeacherAnnouncements from "./teacher/TeacherAnnouncements";
+import TeacherProfile from "./teacher/TeacherProfile";
 
 export default function App() {
   const [showApp, setShowApp] = useState(false);
@@ -99,6 +120,34 @@ export default function App() {
         
         
         </Route>
+
+        <Route path="subadmin" element={<SubAdminLayout/>}>
+        <Route index element={<SubAdminDashboard/>}/>
+        <Route path="analytics" element={<SubAdminAnalytics/>}/>
+        <Route path="students" element={<SubAdminStudent/>}/>
+        <Route path="teachers" element={<SubAdminTeachers/>}/>
+        <Route path="courses" element={<Courses/>}/>
+        <Route path="course-approval" element={<SubAdminCourseApproval/>}/>
+        <Route path="assignments" element={<SubAdminAssignments/>}/>
+        <Route path="live-classes" element={<SubAdminLiveClasses/>}/>
+        <Route path="announcements" element={<SubAdminAnnouncements/>}/>
+        <Route path="settings" element={<SubAdminSettings/>}/>
+        <Route path="profile" element={<SubAdminProfile/>}/>
+
+        </Route>
+
+        <Route path="/teacher" element={<TeacherLayout/>}>
+        <Route index element={<TeacherDashboardOverview/>}/>
+        <Route path="analytics" element={<TeacherAnalytics/>}/>
+        <Route path="courses" element={<TeacherCourses/>}/>
+        <Route path="students" element={<TeacherStudents/>}/>
+        <Route path="assignments" element={<TeacherAssignments/>}/>
+        <Route path="live" element={<TeacherLiveClasses/>}/>
+        <Route path="announcements" element={<TeacherAnnouncements/>}/>
+        <Route path="profile" element={<TeacherProfile/>}/>
+
+        </Route>
+        
       </Routes>
     </BrowserRouter>
   );
